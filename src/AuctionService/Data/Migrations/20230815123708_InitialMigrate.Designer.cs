@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AuctionService.Data.Migrations
 {
     [DbContext(typeof(AuctionServiceDbContext))]
-    [Migration("20230812013938_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230815123708_InitialMigrate")]
+    partial class InitialMigrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,7 +47,6 @@ namespace AuctionService.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Seller")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int?>("SoldAmount")
@@ -57,7 +56,6 @@ namespace AuctionService.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Winner")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -75,22 +73,18 @@ namespace AuctionService.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Color")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Make")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Mileage")
                         .HasColumnType("integer");
 
                     b.Property<string>("Model")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Year")
