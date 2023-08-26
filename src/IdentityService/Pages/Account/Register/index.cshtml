@@ -1,0 +1,53 @@
+﻿@page
+@model IdentityService.Pages.Register.Index
+
+<div>
+    <partial name="_ValidationSummary" />
+
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Register</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-page="/Account/Register/Index">
+                            <input type="hidden" asp-for="InputUser.ReturnUrl" />
+
+                            <div class="form-group">
+                                <label asp-for="InputUser.Username"></label>
+                                <input class="form-control" placeholder="Username" asp-for="InputUser.Username" autofocus>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="InputUser.Email"></label>
+                                <input class="form-control" placeholder="Email" asp-for="InputUser.Email">
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="InputUser.FullName"></label>
+                                <input class="form-control" placeholder="Fullname" asp-for="InputUser.FullName" autofocus>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="InputUser.Password"></label>
+                                <input type="password" class="form-control" placeholder="Password" asp-for="InputUser.Password" autocomplete="off">
+                            </div>
+                            
+                            <a class="pb-2 d-block" asp-page="../Login/Index" asp-route-returnUrl="@Model.InputUser.ReturnUrl">
+                                Aready registered? Login here
+                            </a>
+                            
+                            <button class="btn btn-primary" name="InputUser.Button" value="register">Register</button>
+                            <button class="btn btn-secondary" name="InputUser.Button" value="cancel">Cancel</button>
+                        </form>
+                </div>
+
+                @if(Model.RegisterSuccess)
+                {
+                   <div class="alert alert-success mt-2">
+                    <strong>Successfully registered</strong> - You can now login in!
+                   </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

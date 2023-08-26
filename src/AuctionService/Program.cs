@@ -1,6 +1,7 @@
 using AuctionService.Consumers;
 using AuctionService.Data;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,12 +34,21 @@ builder.Services.AddMassTransit(x =>
         cfa.ConfigureEndpoints(context);
     });
 });
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opts => 
+    {
+        opts.Authority = builder.Configuration["IdentityServiceUrl"];
+        opts.RequireHttpsMetadata = false;
+        opts.TokenValidationParameters.ValidateAudience = false;
+        opts.TokenValidationParameters.NameClaimType = "username";
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
