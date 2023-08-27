@@ -1,3 +1,4 @@
+using System.Reflection.PortableExecutable;
 using AuctionService.Consumers;
 using AuctionService.Data;
 using MassTransit;
@@ -29,9 +30,14 @@ builder.Services.AddMassTransit(x =>
 
     x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("auction", false));
 
-    x.UsingRabbitMq((context, cfa) => 
+    x.UsingRabbitMq((context, cfg) => 
     {
-        cfa.ConfigureEndpoints(context);
+        cfg.Host(builder.Configuration["RabbitMq:Host"], "/", host =>
+        {
+            host.Username(builder.Configuration.GetValue("RabbitMq:Username", "guest"));
+            host.Password(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
+        });
+        cfg.ConfigureEndpoints(context);
     });
 });
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
