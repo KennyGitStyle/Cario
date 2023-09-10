@@ -1,4 +1,4 @@
-﻿using AuctionService.Data;
+﻿﻿using AuctionService.Data;
 using AuctionService.Entities;
 using Contracts;
 using MassTransit;
@@ -13,21 +13,22 @@ public class AuctionFinishedConsumer : IConsumer<AuctionFinished>
     {
         _dbContext = dbContext;
     }
+
     public async Task Consume(ConsumeContext<AuctionFinished> context)
     {
-        Console.WriteLine("--> AuctionFinished Consuming...");
-        var auction = await _dbContext.Auctions.FindAsync(context.Message.AuctionId);
+        Console.WriteLine("--> Consuming auction finished");
 
-        if(context.Message.IsItemSold)
+        var auction = await _dbContext.Auctions.FindAsync(Guid.Parse(context.Message.AuctionId));
+
+        if (context.Message.IsItemSold)
         {
             auction.Winner = context.Message.Winner;
             auction.SoldAmount = context.Message.Amount;
         }
 
-        auction.Status = auction.SoldAmount > auction.ReservePrice ?
-            Status.Finished : Status.ReserveNotMet;
+        auction.Status = auction.SoldAmount > auction.ReservePrice
+            ? Status.Finished : Status.ReserveNotMet;
 
         await _dbContext.SaveChangesAsync();
-
     }
 }

@@ -60,7 +60,7 @@ namespace AuctionService.Data.Migrations
                     b.ToTable("Auctions");
                 });
 
-            modelBuilder.Entity("AuctionService.Entities.Item", b =>
+            modelBuilder.Entity("AuctionService.Item", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -261,11 +261,11 @@ namespace AuctionService.Data.Migrations
                     b.ToTable("OutboxState");
                 });
 
-            modelBuilder.Entity("AuctionService.Entities.Item", b =>
+            modelBuilder.Entity("AuctionService.Item", b =>
                 {
                     b.HasOne("AuctionService.Entities.Auction", "Auction")
                         .WithOne("Item")
-                        .HasForeignKey("AuctionService.Entities.Item", "AuctionId")
+                        .HasForeignKey("AuctionService.Item", "AuctionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

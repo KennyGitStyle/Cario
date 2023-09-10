@@ -1,33 +1,21 @@
-using AuctionService.Consumers;
-using AuctionService.Data;
+using BiddingService.Consumers;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
+using MongoDB.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<AuctionServiceDbContext>(opts => 
-{
-    opts.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnString"));
-});
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddMassTransit(x => 
 {
-    x.AddEntityFrameworkOutbox<AuctionServiceDbContext>(opts => 
-    {
-        opts.QueryDelay = TimeSpan.FromSeconds(10);
+    x.AddConsumersFromNamespaceContaining<AuctionCreatedConsumer>();
 
-        opts.UsePostgres();
-        opts.UseBusOutbox();
-    });
-
-    x.AddConsumersFromNamespaceContaining<AuctionCreatedFaultConsumer>();
-
-    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("auction", false));
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("bids", false));
 
     x.UsingRabbitMq((context, cfg) => 
     {
@@ -47,24 +35,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         opts.TokenValidationParameters.ValidateAudience = false;
         opts.TokenValidationParameters.NameClaimType = "username";
     });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-try
-{
-    await DbInitializer.InitDb(app);
-}
-catch (Exception e)
-{
-    Console.WriteLine(e.Message);
-}
+await DB.InitAsync("BidDb",
+ MongoClientSettings.FromConnectionString(builder.Configuration.GetConnectionString("BidDbConnection")));
 
 app.Run();

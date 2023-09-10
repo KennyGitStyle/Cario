@@ -1,4 +1,4 @@
-﻿using Contracts;
+﻿﻿using Contracts;
 using MassTransit;
 
 namespace AuctionService.Consumers;
@@ -9,17 +9,16 @@ public class AuctionCreatedFaultConsumer : IConsumer<Fault<AuctionCreated>>
     {
         Console.WriteLine("--> Consuming faulty creation");
 
-        var exception = context.Message.Exceptions.FirstOrDefault();
+        var exception = context.Message.Exceptions.First();
 
-        if(exception.ExceptionType == nameof(ArgumentException))
+        if (exception.ExceptionType == "System.ArgumentException")
         {
-           context.Message.Message.Model = "Foobar";
-           await context.Publish(context.Message.Message);
+            context.Message.Message.Model = "FooBar";
+            await context.Publish(context.Message.Message);
         }
         else 
         {
             Console.WriteLine("Not an argument exception - update error dashboard somewhere");
         }
-
     }
 }

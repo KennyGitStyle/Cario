@@ -1,16 +1,17 @@
-﻿using MongoDB.Entities;
+﻿﻿using MongoDB.Entities;
 using SearchService.Models;
+
 
 namespace SearchService.Services;
 
 public class AuctionSvcHttpClient
 {
-    private readonly HttpClient _client;
+    private readonly HttpClient _httpClient;
     private readonly IConfiguration _config;
 
-    public AuctionSvcHttpClient(HttpClient client, IConfiguration config)
+    public AuctionSvcHttpClient(HttpClient httpClient, IConfiguration config)
     {
-        _client = client;
+        _httpClient = httpClient;
         _config = config;
     }
 
@@ -21,7 +22,7 @@ public class AuctionSvcHttpClient
             .Project(x => x.LastUpdatedAt.ToString())
             .ExecuteFirstAsync();
 
-        return await _client.GetFromJsonAsync<List<Item>>
-            (_config["AuctionServiceUrl"] + "/api/auctions?date=" + lastUpdated);
+        return await _httpClient.GetFromJsonAsync<List<Item>>(_config["AuctionServiceUrl"] 
+            + "/api/auctions?date=" + lastUpdated);
     }
 }

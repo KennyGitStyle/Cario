@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿﻿using AutoMapper;
 using Contracts;
 using MassTransit;
 using MongoDB.Entities;
@@ -12,7 +12,7 @@ public class AuctionCreatedConsumer : IConsumer<AuctionCreated>
 
     public AuctionCreatedConsumer(IMapper mapper)
     {
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _mapper = mapper;
     }
 
     public async Task Consume(ConsumeContext<AuctionCreated> context)
@@ -21,10 +21,7 @@ public class AuctionCreatedConsumer : IConsumer<AuctionCreated>
 
         var item = _mapper.Map<Item>(context.Message);
 
-        if (string.IsNullOrWhiteSpace(item.Model))
-        {
-            throw new ArgumentException("The item's model must be specified.");
-        }
+        if (item.Model == "Foo") throw new ArgumentException("Cannot sell cars with name of Foo");
 
         await item.SaveAsync();
     }
