@@ -3,7 +3,7 @@ using BiddingService.DTOs;
 using BiddingService.Models;
 using Contracts;
 
-namespace BiddingService;
+namespace BiddingService.RequestHelpers;
 
 public class MappingProfiles : Profile
 {

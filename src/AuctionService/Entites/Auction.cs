@@ -11,6 +11,6 @@ public class Auction
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime LastUpdatedAt { get; set; } = DateTime.UtcNow;
     public DateTime AuctionEnd { get; set; }
-    public Status Status { get; set; }
+    public AuctionStatus Status { get; set; }
     public Item Item { get; set; } 
 }
