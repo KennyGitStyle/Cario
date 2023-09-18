@@ -5,6 +5,16 @@
   "hints": {
     "typescript-config/is-valid": "off",
     "button-type": "off",
-    "axe/name-role-value": "off"
-  }
+    "axe/name-role-value": "off",
+    "compat-api/css": "off"
+  },
+  "browserslist": [
+    "defaults",
+    "not ie 11",
+    "not and_chr <= 116",
+    "not chrome <= 116",
+    "not edge <= 116",
+    "not opera <= 101",
+    "not samsung <= 21"
+  ]
 }

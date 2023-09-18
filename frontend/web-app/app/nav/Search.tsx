@@ -33,13 +33,7 @@ export default function Search() {
           type="text"
           placeholder="Search for cars by make, model, or color"
           className="
-            flex-grow
-            pl-2
-            bg-transparent
-            border-none // This will remove the border
-            focus:outline-none
-            focus:border-transparent
-            focus:ring-0
+            input-custom 
             text-sm
             text-gray-600
           "
