@@ -1,3 +1,4 @@
+using Duende.IdentityServer;
 using IdentityService.Data;
 using IdentityService.Models;
 using Microsoft.AspNetCore.Identity;
@@ -27,7 +28,7 @@ internal static class HostingExtensions
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
 
-                if(builder.Environment.IsEnvironment("Docker"))
+                if (builder.Environment.IsEnvironment("Docker"))
                 {
                     options.IssuerUri = "identity-svc";
                 }
@@ -37,16 +38,17 @@ internal static class HostingExtensions
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients)
+            .AddInMemoryClients(Config.Clients(builder.Configuration))
             .AddAspNetIdentity<ApplicationUser>()
-            .AddProfileService<CustomerProfileService>();
+            .AddProfileService<CustomProfileService>();
 
-        builder.Services.ConfigureApplicationCookie(opts => {
-            opts.Cookie.SameSite = SameSiteMode.Lax;
+        builder.Services.ConfigureApplicationCookie(options => 
+        {
+            options.Cookie.SameSite = SameSiteMode.Lax;
         });
         
         builder.Services.AddAuthentication();
-        
+
         return builder.Build();
     }
     

@@ -3,7 +3,6 @@ using BiddingService.Models;
 using Grpc.Net.Client;
 
 namespace BiddingService.Services;
-
 public class GrpcAuctionClient
 {
     private readonly ILogger<GrpcAuctionClient> _logger;

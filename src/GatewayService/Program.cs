@@ -6,21 +6,20 @@ builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(opts => 
+    .AddJwtBearer(options => 
     {
-        opts.Authority = builder.Configuration["IdentityServiceUrl"];
-        opts.RequireHttpsMetadata = false;
-        opts.TokenValidationParameters.ValidateAudience = false;
-        opts.TokenValidationParameters.NameClaimType = "username";
+        options.Authority = builder.Configuration["IdentityServiceUrl"];
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters.ValidateAudience = false;
+        options.TokenValidationParameters.NameClaimType = "username";
     });
 
-builder.Services.AddCors(opts => 
+builder.Services.AddCors(options => 
 {
-    opts.AddPolicy("customPolicy", b => 
+    options.AddPolicy("customPolicy", b => 
     {
         b.AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials().WithOrigins(builder.Configuration["ClientApp"]);
+            .AllowAnyMethod().AllowCredentials().WithOrigins(builder.Configuration["ClientApp"]);
     });
 });
 

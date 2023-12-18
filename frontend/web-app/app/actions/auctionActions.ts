@@ -3,7 +3,7 @@
 import { Auction, Bid, PagedResult } from "@/types";
 import { FieldValues } from "react-hook-form";
 import { revalidatePath } from "next/cache";
-import { fetchWrapper } from "@/lib/fetchWrapper";
+import { fetchWrapper } from "@/app/lib/fetchWrapper";
 
 export async function getData(query: string): Promise<PagedResult<Auction>> {
     return await fetchWrapper.get(`search/${query}`)
