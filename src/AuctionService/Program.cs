@@ -1,3 +1,4 @@
+using AuctionService;
 using AuctionService.Consumers;
 using AuctionService.Data;
 using AuctionService.Services;
@@ -51,6 +52,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 builder.Services.AddGrpc();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddScoped<IAuctionRespository, AuctionRespository>();
 
 var app = builder.Build();
 
@@ -72,3 +74,5 @@ catch (Exception e)
 }
 
 app.Run();
+
+public partial class Program {}
